@@ -52,19 +52,15 @@ function fillInputList() {
             const $textContainer = $("<div>").css("margin-left", "15px");
             $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
             
-            // Improved logic for sub text
+            // Better logic for subtext
             let subText = "";
-            if (catName.includes("Self") || catName.includes("Partner") || catName.includes("Roles") || 
-                catName.includes("Clothing") || catName.includes("Restrictive") || 
-                catName.includes("Domination") || catName.includes("Degradation") || 
-                catName.includes("Other")) {
+            if (["Roles", "Clothing", "Restrictive", "Domination & Submission", "Degradation", "Other"].some(c => catName.includes(c))) {
                 subText = "(Self, Partner)";
             } 
-            else if (catName.includes("Giving") || catName.includes("Pain") || 
-                     catName.includes("General Sex Acts") || catName.includes("Touch")) {
+            else if (["General Sex Acts", "Pain", "Touch"].some(c => catName.includes(c))) {
                 subText = "(Giving, Receiving)";
-            }
-            else if (catName.includes("Non-Consent") || catName.includes("Actor")) {
+            } 
+            else if (catName.includes("Non-Consent")) {
                 subText = "(Actor, Target)";
             }
             
