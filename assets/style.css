@@ -126,3 +126,36 @@ h1 { text-align: center; margin: 20px 0 10px; }
     padding: 12px;
     margin: 15px 0;
 }
+
+.kinkRow {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.choices {
+    display: flex;
+    gap: 6px;
+    margin-right: 12px;
+}
+
+.choice {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.choice.selected {
+    outline: 3px solid #000;
+    transform: scale(1.15);
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.kinkName {
+    flex: 1;
+    font-weight: 500;
+}
