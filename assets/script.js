@@ -9,6 +9,19 @@ $(function () {
         else if ("addRule" in sheet) sheet.addRule(selector, rules, 0);
     };
 
+    function createChoiceButtons() {
+    const $container = $("<div>").addClass("choices");
+    $(".legend .choice").each(function () {
+        const cls = this.className.replace("choice", "").trim();
+        const title = $(this).parent().find(".legend-text").text().trim();
+        $("<span>")
+            .addClass("choice " + cls)
+            .attr("title", title)
+            .appendTo($container);
+    });
+    return $container;
+}
+
     function parseKinksText(kinksText) {
         const newKinks = {};
         const lines = kinksText.replace(/\r/g, "").split("\n");
