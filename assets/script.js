@@ -1,26 +1,11 @@
 $(function () {
     let kinks = {};
 
-    let strToClass = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, "");
-
     let addCssRule = (selector, rules) => {
         const sheet = document.styleSheets[0];
         if ("insertRule" in sheet) sheet.insertRule(`${selector} { ${rules} }`, 0);
         else if ("addRule" in sheet) sheet.addRule(selector, rules, 0);
     };
-
-    function createChoiceButtons() {
-    const $container = $("<div>").addClass("choices");
-    $(".legend .choice").each(function () {
-        const cls = this.className.replace("choice", "").trim();
-        const title = $(this).parent().find(".legend-text").text().trim();
-        $("<span>")
-            .addClass("choice " + cls)
-            .attr("title", title)
-            .appendTo($container);
-    });
-    return $container;
-}
 
     function parseKinksText(kinksText) {
         const newKinks = {};
@@ -46,19 +31,6 @@ $(function () {
         return newKinks;
     }
 
-    function createChoiceButtons() {
-        const $container = $("<div>").addClass("choices");
-        $(".legend .choice").each(function () {
-            const cls = this.className.replace("choice", "").trim();
-            const title = $(this).parent().find(".legend-text").text().trim();
-            $("<span>")
-                .addClass("choice " + cls)
-                .attr("title", title)
-                .appendTo($container);
-        });
-        return $container;
-    }
-
     function fillInputList() {
         $("#InputList").empty();
         
@@ -70,7 +42,13 @@ $(function () {
             category.kinks.forEach(kink => {
                 const $row = $("<div>").addClass("kinkRow");
                 
-                $row.append(createChoiceButtons());
+                // Single colored button like the image
+                const $button = $("<span>")
+                    .addClass("choice na") 
+                    .attr("title", "Click to change color")
+                    .css("cursor", "pointer");
+                
+                $row.append($button);
                 $row.append($("<div>").addClass("kinkName").text(kink));
                 
                 $catDiv.append($row);
@@ -82,21 +60,31 @@ $(function () {
 
     // Setup legend colors
     $(".legend .choice").each(function () {
-        const $choice = $(this);
-        const color = $choice.data("color");
-        const cssClass = this.className.replace("choice", "").trim();
-        addCssRule(`.choice.${cssClass}`, `background-color: ${color};`);
+        const color = $(this).data("color");
+        const cls = this.className.replace("choice", "").trim();
+        addCssRule(`.choice.${cls}`, `background-color: ${color};`);
+    });
+
+    // Click to cycle through colors
+    $(document).on("click", ".choice", function () {
+        const classes = ["na", "maybe", "okay", "like", "favorite", "try"];
+        let current = 0;
+        
+        for (let i = 0; i < classes.length; i++) {
+            if ($(this).hasClass(classes[i])) {
+                current = i;
+                break;
+            }
+        }
+        
+        $(this).removeClass(classes.join(" "));
+        current = (current + 1) % classes.length;
+        $(this).addClass(classes[current]);
     });
 
     // Initial load
     kinks = parseKinksText($("#Kinks").val().trim());
     fillInputList();
-
-    // Export
-    $("#Export").on("click", () => {
-        const selections = $(".choice.selected").map((_, el) => $(el).attr("title")).get().join(",");
-        $("#URL").val(window.location.href + "#" + selections);
-    });
 
     // Edit button
     $("#Edit").on("click", () => $("#EditOverlay").fadeIn());
@@ -110,13 +98,6 @@ $(function () {
     // Close overlay
     $(".overlay").on("click", function (e) {
         if (e.target === this) $(this).fadeOut();
-    });
-
-    // Toggle selection (only one per row)
-    $(document).on("click", ".kinkRow .choice", function () {
-        const $row = $(this).closest(".kinkRow");
-        $row.find(".choice").removeClass("selected");
-        $(this).addClass("selected");
     });
 
     // Resize
