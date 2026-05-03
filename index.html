@@ -17,9 +17,8 @@
             padding: 15px; margin: 15px auto; max-width: 800px;
         }
         .kinkRow {
-            display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;
         }
-        .kinkName { flex: 1; padding-left: 15px; }
         .na { background: #CC0000; }
         .maybe { background: #FF8800; }
         .okay { background: #FFCC00; }
@@ -193,16 +192,27 @@
                 const $cat = $("<div>").addClass("kinkCategory").append($("<h2>").text(catName));
                 
                 category.kinks.forEach(kink => {
-                    const $row = $("<div>").addClass("kinkRow");
-                    const $btn = $("<span>").addClass("choice na").css("cursor", "pointer");
-                    $row.append($btn).append($("<div>").addClass("kinkName").text(kink));
+                    const $row = $("<div>").addClass("kinkRow").css({display: "flex", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #eee"});
+                    
+                    const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
+                    const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
+                    
+                    const $textContainer = $("<div>").css("margin-left", "15px");
+                    $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
+                    
+                    if (catName.includes("Self") || catName.includes("Partner") || catName.includes("Roles") || catName.includes("Dom")) {
+                        $textContainer.append($("<small>").text("(Self, Partner)").css({color: "#666", display: "block"}));
+                    } else if (catName.includes("Giving") || catName.includes("Pain") || catName.includes("General Sex Acts")) {
+                        $textContainer.append($("<small>").text("(Giving, Receiving)").css({color: "#666", display: "block"}));
+                    }
+                    
+                    $row.append($btn1, $btn2, $textContainer);
                     $cat.append($row);
                 });
                 $("#InputList").append($cat);
             });
         }
 
-        // Cycle colors on click
         $(document).on("click", ".choice", function() {
             const order = ["na","maybe","okay","like","favorite","try"];
             let idx = order.findIndex(c => $(this).hasClass(c));
@@ -210,7 +220,6 @@
             $(this).addClass(order[(idx + 1) % order.length]);
         });
 
-        // Load
         kinks = parseKinksText($("#Kinks").val().trim());
         fillInputList();
 
