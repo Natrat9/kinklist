@@ -192,7 +192,12 @@
                 const $cat = $("<div>").addClass("kinkCategory").append($("<h2>").text(catName));
                 
                 category.kinks.forEach(kink => {
-                    const $row = $("<div>").addClass("kinkRow").css({display: "flex", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #eee"});
+                    const $row = $("<div>").addClass("kinkRow").css({
+                        display: "flex", 
+                        alignItems: "center", 
+                        padding: "10px 0", 
+                        borderBottom: "1px solid #eee"
+                    });
                     
                     const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
                     const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
@@ -200,10 +205,23 @@
                     const $textContainer = $("<div>").css("margin-left", "15px");
                     $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
                     
-                    if (catName.includes("Self") || catName.includes("Partner") || catName.includes("Roles") || catName.includes("Dom")) {
-                        $textContainer.append($("<small>").text("(Self, Partner)").css({color: "#666", display: "block"}));
-                    } else if (catName.includes("Giving") || catName.includes("Pain") || catName.includes("General Sex Acts")) {
-                        $textContainer.append($("<small>").text("(Giving, Receiving)").css({color: "#666", display: "block"}));
+                    let subText = "";
+                    const name = catName.toLowerCase();
+                    
+                    if (name.includes("clothing") || name.includes("roles") || name.includes("restrictive") || 
+                        name.includes("domination") || name.includes("degradation") || name.includes("other") ||
+                        name.includes("self") || name.includes("partner")) {
+                        subText = "(Self, Partner)";
+                    } 
+                    else if (name.includes("general sex acts") || name.includes("pain") || name.includes("giving") || name.includes("touch")) {
+                        subText = "(Giving, Receiving)";
+                    } 
+                    else if (name.includes("non-consent") || name.includes("actor")) {
+                        subText = "(Actor, Target)";
+                    }
+                    
+                    if (subText) {
+                        $textContainer.append($("<small>").text(subText).css({color: "#666", display: "block"}));
                     }
                     
                     $row.append($btn1, $btn2, $textContainer);
