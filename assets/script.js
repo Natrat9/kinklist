@@ -31,32 +31,53 @@ $(function () {
         return newKinks;
     }
 
-    function fillInputList() {
-        $("#InputList").empty();
+function fillInputList() {
+    $("#InputList").empty();
+    
+    Object.keys(kinks).forEach(catName => {
+        const category = kinks[catName];
+        const $cat = $("<div>").addClass("kinkCategory").append($("<h2>").text(catName));
         
-        Object.keys(kinks).forEach(catName => {
-            const category = kinks[catName];
-            const $catDiv = $("<div>").addClass("kinkCategory")
-                .append($("<h2>").text(catName));
-
-            category.kinks.forEach(kink => {
-                const $row = $("<div>").addClass("kinkRow");
-                
-                // Single colored button like the image
-                const $button = $("<span>")
-                    .addClass("choice na") 
-                    .attr("title", "Click to change color")
-                    .css("cursor", "pointer");
-                
-                $row.append($button);
-                $row.append($("<div>").addClass("kinkName").text(kink));
-                
-                $catDiv.append($row);
+        category.kinks.forEach(kink => {
+            const $row = $("<div>").addClass("kinkRow").css({
+                display: "flex", 
+                alignItems: "center", 
+                padding: "10px 0", 
+                borderBottom: "1px solid #eee"
             });
-
-            $("#InputList").append($catDiv);
+            
+            const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
+            const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
+            
+            const $textContainer = $("<div>").css("margin-left", "15px");
+            $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
+            
+            // Improved logic for sub text
+            let subText = "";
+            if (catName.includes("Self") || catName.includes("Partner") || catName.includes("Roles") || 
+                catName.includes("Clothing") || catName.includes("Restrictive") || 
+                catName.includes("Domination") || catName.includes("Degradation") || 
+                catName.includes("Other")) {
+                subText = "(Self, Partner)";
+            } 
+            else if (catName.includes("Giving") || catName.includes("Pain") || 
+                     catName.includes("General Sex Acts") || catName.includes("Touch")) {
+                subText = "(Giving, Receiving)";
+            }
+            else if (catName.includes("Non-Consent") || catName.includes("Actor")) {
+                subText = "(Actor, Target)";
+            }
+            
+            if (subText) {
+                $textContainer.append($("<small>").text(subText).css({color: "#666", display: "block"}));
+            }
+            
+            $row.append($btn1, $btn2, $textContainer);
+            $cat.append($row);
         });
-    }
+        $("#InputList").append($cat);
+    });
+}
 
     // Setup legend colors
     $(".legend .choice").each(function () {
