@@ -24,7 +24,6 @@
         .okay { background: #FFCC00; }
         .like { background: #00CC00; }
         .favorite { background: #0099FF; }
-        .try { background: #BB44FF; }
     </style>
 </head>
 <body>
@@ -36,7 +35,6 @@
         <div><span class="choice okay"></span> Okay</div>
         <div><span class="choice like"></span> Like</div>
         <div><span class="choice favorite"></span> Favorite</div>
-        <div><span class="choice try"></span> Want To Try</div>
     </div>
 
     <div id="InputList"></div>
@@ -209,11 +207,9 @@
                     const name = catName.toLowerCase();
                     
                     if (catName === "Cocks") {
-                        // Special case: only 1 button for Cocks
                         const $btn = $("<span>").addClass("choice na").css({cursor: "pointer"});
                         $row.append($btn);
                     } else {
-                        // Normal: 2 buttons
                         const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
                         const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
                         $row.append($btn1, $btn2);
@@ -241,7 +237,7 @@
         }
 
         $(document).on("click", ".choice", function() {
-            const order = ["na","maybe","okay","like","favorite","try"];
+            const order = ["na","maybe","okay","like","favorite"];
             let idx = order.findIndex(c => $(this).hasClass(c));
             $(this).removeClass(order.join(" "));
             $(this).addClass(order[(idx + 1) % order.length]);
