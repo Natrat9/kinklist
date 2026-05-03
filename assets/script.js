@@ -22,10 +22,7 @@ $(function () {
             if (line.startsWith("#")) {
                 if (catName && cat) newKinks[catName] = cat;
                 catName = line.substring(1).trim();
-                cat = { fields: [], kinks: [] };
-            } 
-            else if (line.startsWith("(") && line.endsWith(")") && cat) {
-                cat.fields = line.slice(1, -1).split(",").map(f => f.trim());
+                cat = { kinks: [] };
             } 
             else if (line.startsWith("*") && cat) {
                 cat.kinks.push(line.substring(1).trim());
@@ -36,52 +33,37 @@ $(function () {
         return newKinks;
     }
 
-    function createColumns() {
-        $("#InputList").empty();
-        let numCols = Math.floor((document.body.scrollWidth - 40) / 380);
-        numCols = Math.max(1, Math.min(numCols, 4));
-
-        let $columns = [];
-        for (let i = 0; i < numCols; i++) {
-            $columns.push($("<div>").addClass("col").appendTo("#InputList"));
-        }
-        return $columns;
-    }
-
     function createChoiceButtons() {
         const $container = $("<div>").addClass("choices");
         $(".legend .choice").each(function () {
             const cls = this.className.replace("choice", "").trim();
             const title = $(this).parent().find(".legend-text").text().trim();
-            $("<span>").addClass("choice " + cls).attr("title", title).appendTo($container);
+            $("<span>")
+                .addClass("choice " + cls)
+                .attr("title", title)
+                .appendTo($container);
         });
         return $container;
     }
 
-    function createKinkRow(kinkName, fields) {
-        const $row = $("<div>").addClass("kinkRow");
-        fields.forEach(() => {
-            $row.append($("<div>").append(createChoiceButtons()));
-        });
-        $row.append($("<div>").addClass("kinkName").text(kinkName));
-        return $row;
-    }
-
     function fillInputList() {
-        const $columns = createColumns();
-        let colIndex = 0;
-
+        $("#InputList").empty();
+        
         Object.keys(kinks).forEach(catName => {
             const category = kinks[catName];
             const $catDiv = $("<div>").addClass("kinkCategory")
                 .append($("<h2>").text(catName));
 
             category.kinks.forEach(kink => {
-                $catDiv.append(createKinkRow(kink, category.fields));
+                const $row = $("<div>").addClass("kinkRow");
+                
+                $row.append(createChoiceButtons());
+                $row.append($("<div>").addClass("kinkName").text(kink));
+                
+                $catDiv.append($row);
             });
 
-            $columns[colIndex].append($catDiv);
-            colIndex = (colIndex + 1) % $columns.length;
+            $("#InputList").append($catDiv);
         });
     }
 
@@ -104,9 +86,7 @@ $(function () {
     });
 
     // Edit button
-    $("#Edit").on("click", () => {
-        $("#EditOverlay").fadeIn();
-    });
+    $("#Edit").on("click", () => $("#EditOverlay").fadeIn());
 
     $("#KinksOK").on("click", () => {
         kinks = parseKinksText($("#Kinks").val().trim());
@@ -114,18 +94,20 @@ $(function () {
         $("#EditOverlay").fadeOut();
     });
 
-    // Close overlay when clicking outside
+    // Close overlay
     $(".overlay").on("click", function (e) {
         if (e.target === this) $(this).fadeOut();
     });
 
-    // Toggle selections
-    $(document).on("click", ".choices .choice", function () {
-        $(this).toggleClass("selected");
+    // Toggle selection (only one per row)
+    $(document).on("click", ".kinkRow .choice", function () {
+        const $row = $(this).closest(".kinkRow");
+        $row.find(".choice").removeClass("selected");
+        $(this).addClass("selected");
     });
 
-    // Resize handler
-    $(window).on("resize", () => {
-        fillInputList();
+    // Resize
+    $(window).on("resize", fillInputList);
+});
     });
 });
