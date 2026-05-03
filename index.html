@@ -28,7 +28,6 @@
     </style>
 </head>
 <body>
-    <button id="Edit">Edit Kinks</button>
     <h1>The All-Encompassing Kinklist!</h1>
 
     <div class="legend">
@@ -203,32 +202,38 @@
                         borderBottom: "1px solid #eee"
                     });
                     
-                    const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
-                    const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
-                    
                     const $textContainer = $("<div>").css("margin-left", "15px");
                     $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
                     
                     let subText = "";
                     const name = catName.toLowerCase();
                     
-                    if (name.includes("clothing") || name.includes("roles") || name.includes("restrictive") || 
-                        name.includes("domination") || name.includes("degradation") || name.includes("other") ||
-                        name.includes("self") || name.includes("partner")) {
-                        subText = "(Self, Partner)";
-                    } 
-                    else if (name.includes("general sex acts") || name.includes("pain") || name.includes("giving") || name.includes("touch")) {
-                        subText = "(Giving, Receiving)";
-                    } 
-                    else if (name.includes("non-consent") || name.includes("actor")) {
-                        subText = "(Actor, Target)";
+                    if (catName === "Cocks") {
+                        // Special case: only 1 button for Cocks
+                        const $btn = $("<span>").addClass("choice na").css({cursor: "pointer"});
+                        $row.append($btn);
+                    } else {
+                        // Normal: 2 buttons
+                        const $btn1 = $("<span>").addClass("choice na").css({cursor: "pointer", marginRight: "8px"});
+                        const $btn2 = $("<span>").addClass("choice na").css({cursor: "pointer"});
+                        $row.append($btn1, $btn2);
+                        
+                        if (name.includes("clothing") || name.includes("roles") || name.includes("restrictive") || 
+                            name.includes("domination") || name.includes("degradation") || name.includes("other") ||
+                            name.includes("self") || name.includes("partner")) {
+                            subText = "(Self, Partner)";
+                        } else if (name.includes("general sex acts") || name.includes("pain") || name.includes("giving") || name.includes("touch")) {
+                            subText = "(Giving, Receiving)";
+                        } else if (name.includes("non-consent") || name.includes("actor")) {
+                            subText = "(Actor, Target)";
+                        }
                     }
                     
                     if (subText) {
                         $textContainer.append($("<small>").text(subText).css({color: "#666", display: "block"}));
                     }
                     
-                    $row.append($btn1, $btn2, $textContainer);
+                    $row.append($textContainer);
                     $cat.append($row);
                 });
                 $("#InputList").append($cat);
@@ -245,7 +250,6 @@
         kinks = parseKinksText($("#Kinks").val().trim());
         fillInputList();
 
-        $("#Edit").on("click", () => $("#EditOverlay").show());
         $("#KinksOK").on("click", () => {
             kinks = parseKinksText($("#Kinks").val().trim());
             fillInputList();
