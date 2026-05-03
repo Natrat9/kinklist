@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Kinklist</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTAvMjEvMTV5ehY1AAAAZElEQVQ4jaWTwQ3AIAwDbcT+I9f9hjYQA/mAkO7igKAACWdFAF0A2gb0hP0uCyTATyAJSoaK5xGyEmTC9lktmORUdAQvBQ5cJshktoDk0HkmKRNUEmuE6ztYVXe7bT+jW7z9zi8qYiodCjCHKgAAAABJRU5ErkJggg==">
-		<link rel="stylesheet" type="text/css" href="./assets/style.css">
-		<script type="text/javascript" src="//code.jquery.com/jquery-3.3.1.js"></script>
-	</head>
-	<body>
-		<div class="widthWrapper">
-			<button id="Edit"></button>
-			<h1>The All-Encompassing Kinklist!</h1>
-			<div class="legend">
-				<div><span data-color="#808080" class="choice na"></span> <span class="legend-text">N/A</span></div>
-				<div><span data-color="#920000" class="choice hard"></span> <span class="legend-text">Hard-Limit</span></div>
-				<div><span data-color="#DB6C00" class="choice soft"></span> <span class="legend-text">Soft-Limit</span></div>
-				<div><span data-color="#FDFD6B" class="choice maybe"></span> <span class="legend-text">Maybe/Wanna-Try</span></div>
-				<div><span data-color="#23FD22" class="choice yes"></span> <span class="legend-text">Yes</span></div>
-				<div><span data-color="#6DB5FE" class="choice favorite"></span> <span class="legend-text">Favorite</span></div>
-			</div>
-			<div id="ExportWrapper">
-				<input type="text" id="URL">
-				<button id="Export">Export</button>
-				<div id="Loading">Loading</div>
-			</div>
-			<button id="StartBtn"></button>
-			<div id="InputList"></div>
-		</div>
-		<div id="EditOverlay" class="overlay">
-			<textarea id="Kinks">
+<head>
+    <title>Kinklist</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTAvMjEvMTV5ehY1AAAAZElEQVQ4jaWTwQ3AIAwDbcT+I9f9hjYQA/mAkO7igKAACWdFAF0A2gb0hP0uCyTATyAJSoaK5xGyEmTC9lktmORUdAQvBQ5cJshktoDk0HkmKRNUEmuE6ztYVXe7bT+jW7z9zi8qYiodCjCHKgAAAABJRU5ErkJggg==">
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <div class="widthWrapper">
+        <button id="Edit">Edit Kinks</button>
+        <h1>The All-Encompassing Kinklist!</h1>
+        
+        <div class="legend">
+            <div><span data-color="#808080" class="choice na"></span> <span class="legend-text">N/A</span></div>
+            <div><span data-color="#920000" class="choice hard"></span> <span class="legend-text">Hard-Limit</span></div>
+            <div><span data-color="#DB6C00" class="choice soft"></span> <span class="legend-text">Soft-Limit</span></div>
+            <div><span data-color="#FDFD6B" class="choice maybe"></span> <span class="legend-text">Maybe/Wanna-Try</span></div>
+            <div><span data-color="#23FD22" class="choice yes"></span> <span class="legend-text">Yes</span></div>
+            <div><span data-color="#6DB5FE" class="choice favorite"></span> <span class="legend-text">Favorite</span></div>
+        </div>
 
+        <div id="ExportWrapper">
+            <input type="text" id="URL" placeholder="Export URL will appear here">
+            <button id="Export">Export</button>
+        </div>
+
+        <button id="StartBtn" style="display:none;">Start</button>
+        <div id="InputList"></div>
+    </div>
+
+    <!-- Edit Overlay -->
+    <div id="EditOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Edit Kinklist</h2>
+            <textarea id="Kinks" spellcheck="false">
 #Cocks
 (General)
 * Small Cocks
@@ -70,7 +75,6 @@
 * Teasing
 * JOI/SI
 
-
 #Restrictive
 (Self, Partner)
 * Gag
@@ -80,7 +84,6 @@
 * Rope Play
 * Bondage (Light)
 * Bondage (Heavy)
-
 
 #Domination & Submission
 (Dominant, Submissive)
@@ -133,7 +136,6 @@
 * Soft-Drugs
 * Alcohol
 
-
 #Other
 (Self/Receiving, Partner/Giving)
 * Breath Play
@@ -143,24 +145,11 @@
 * Interacial 
 * Raceplay
 * Cuckold/Cuckqueen
+            </textarea>
+            <button id="KinksOK">Accept</button>
+        </div>
+    </div>
 
-
-			</textarea>
-			<button id="KinksOK">Accept</button>
-		</div>
-		<div id="InputOverlay" class="overlay">
-			<div class="widthWrapper">
-				<div id="InputPrevious"></div>
-				<div id="InputCurrent">
-					<h2 id="InputCategory"></h2>
-					<h3 id="InputField"></h3>
-					<button class="closePopup">&times;</button>
-					<div id="InputValues"></div>
-				</div>
-				<div id="InputNext"></div>
-			</div>
-		</div>
-		<footer id="footer"></footer>
-		<script type="text/javascript" src="./assets/script.js"></script>
-	</body>
+    <script src="./assets/script.js"></script>
+</body>
 </html>
