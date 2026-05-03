@@ -109,5 +109,3 @@ $(function () {
     // Resize
     $(window).on("resize", fillInputList);
 });
-    });
-});
