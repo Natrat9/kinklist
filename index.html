@@ -30,7 +30,7 @@
     <h1> Kinklist</h1>
 
     <div class="legend">
-        <div><span class="choice na"></span> No</div>
+        <div><span class="choice no"></span> No</div>
         <div><span class="choice maybe"></span> Maybe/Depends</div>
         <div><span class="choice okay"></span> Okay</div>
         <div><span class="choice like"></span> Like</div>
@@ -239,7 +239,7 @@
         }
 
         $(document).on("click", ".choice", function() {
-            const order = ["na","maybe","okay","like","favorite"];
+            const order = ["no","maybe","okay","like","favorite"];
             let idx = order.findIndex(c => $(this).hasClass(c));
             $(this).removeClass(order.join(" "));
             $(this).addClass(order[(idx + 1) % order.length]);
