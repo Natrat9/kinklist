@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Kinklist</title>
+    <title>Kinklist</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-    <h1>My Kinklist</h1>
+    <h1>The All-Encompassing Kinklist!</h1>
 
     <div class="legend">
         <div><span class="choice na"></span> No or N/A</div>
@@ -35,10 +35,6 @@
         <div><span class="choice okay"></span> Okay</div>
         <div><span class="choice like"></span> Like</div>
         <div><span class="choice favorite"></span> Favorite</div>
-    </div>
-
-    <div style="text-align:center; margin:15px 0;">
-        <button id="SaveImage" style="padding:10px 20px; font-size:16px;">💾 Save as Image</button>
     </div>
 
     <div id="InputList"></div>
@@ -55,13 +51,118 @@
 * Unshaved
 * Shaved
 * Trimmed
+
+#Roles 
+(Self, Partner)
+* Dominant
+* Submissive
+* Switch
+
+#Clothing
+(Self, Partner)
+* Clothed Sex
+* Lingerie
+* Stockings
+* Heels
+* Uniform/Costume
+* Glasses
+* Contacts
+
+#General Sex Acts
+(Giving, Receiving)
+* Anal sex
+* Handjob
+* Fingering
+* Cunnilingus
+* Blowjob
+* Deep throat
+* Facials
+* Swallowing
+* Face-sitting
+* Edging
+* Teasing
+* JOI/SI
+
+#Restrictive
+(Self, Partner)
+* Gag
+* Collar
+* Leash
+* Chastity
+* Rope Play
+* Bondage (Light)
+* Bondage (Heavy)
+
+#Domination & Submission
+(Dominant, Submissive)
+* Domestic Servitude
+* Slavery
+* Pet Play
+* Caregiver
+* Discipline
+* Begging
+* Forced Orgasm
+* Ruined Orgasm
+* Orgasm Control
+* Orgasm Denial
+
+#Non-Consent
+(Aggressor, Target)
+* Rape
+* Defeat Rape
+* Sex in Exchange for Services
+* Blackmail / Coercion
+* Sleeping
+* Free use
+
+#Degradation
+(Dominant, Submissive)
+* Glory Hole
+* Name Calling
+* Humiliation
+
+#Pain
+(Giving, Receiving)
+* Light Pain
+* Heavy Pain
+* Overstimulation
+* Biting
+* Scratching
+* Nipple Clamps
+* Beating
+* Spanking
+* Sacktapping
+* Ballbusting
+* Ballbusting extreme
+* Electro Stimulation
+* Blade Play
+
+#Drugs
+(General)
+* Stimulant Hard Drugs
+* Relaxant Hard Drugs
+* Soft-Drugs
+* Alcohol
+* Smoking
+* Caffeine
+
+#Other
+(Self/Receiving, Partner/Giving)
+* Breath Play
+* Impregnation
+* Pregnancy
+* Lactation
+* Interacial
+* Raceplay
+* Cuckold/Cuckqueen
+* Monogamous
+* Polyamorous
             </textarea>
             <button id="KinksOK">Accept</button>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         let kinks = {};
 
@@ -92,7 +193,12 @@
                 const $cat = $("<div>").addClass("kinkCategory").append($("<h2>").text(catName));
                 
                 category.kinks.forEach(kink => {
-                    const $row = $("<div>").addClass("kinkRow").css({display: "flex", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #eee"});
+                    const $row = $("<div>").addClass("kinkRow").css({
+                        display: "flex", 
+                        alignItems: "center", 
+                        padding: "10px 0", 
+                        borderBottom: "1px solid #eee"
+                    });
                     
                     const $textContainer = $("<div>").css("margin-left", "15px");
                     $textContainer.append($("<div>").text(kink).css("font-weight", "500"));
@@ -109,14 +215,19 @@
                         $row.append($btn1, $btn2);
                         
                         if (name.includes("clothing") || name.includes("roles") || name.includes("restrictive") || 
-                            name.includes("domination") || name.includes("degradation") || name.includes("other")) {
+                            name.includes("domination") || name.includes("degradation") || name.includes("other") ||
+                            name.includes("self") || name.includes("partner")) {
                             subText = "(Self, Partner)";
-                        } else if (name.includes("general sex acts") || name.includes("pain") || name.includes("giving")) {
+                        } else if (name.includes("general sex acts") || name.includes("pain") || name.includes("giving") || name.includes("touch")) {
                             subText = "(Giving, Receiving)";
+                        } else if (name.includes("non-consent") || name.includes("actor")) {
+                            subText = "(Actor, Target)";
                         }
                     }
                     
-                    if (subText) $textContainer.append($("<small>").text(subText).css({color: "#666", display: "block"}));
+                    if (subText) {
+                        $textContainer.append($("<small>").text(subText).css({color: "#666", display: "block"}));
+                    }
                     
                     $row.append($textContainer);
                     $cat.append($row);
@@ -130,16 +241,6 @@
             let idx = order.findIndex(c => $(this).hasClass(c));
             $(this).removeClass(order.join(" "));
             $(this).addClass(order[(idx + 1) % order.length]);
-        });
-
-        // Save as Image
-        $("#SaveImage").on("click", function() {
-            html2canvas(document.getElementById("InputList"), {scale: 2}).then(canvas => {
-                const link = document.createElement("a");
-                link.download = "My-Kinklist.png";
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-            });
         });
 
         kinks = parseKinksText($("#Kinks").val().trim());
